@@ -26,18 +26,19 @@ func main() {
 	s.Clear()
 	w, h := s.Size()
 
-	st := tcell.StyleDefault
+	st := tcell.StyleDefault.Background(tcell.ColorBlack)
 
-	for x := 0; x < w; x++ {
-		for y := 0; y < h; y++ {
-			color := rand.Int31n(0x1000000)
-			st = st.Foreground(tcell.NewHexColor(color)).Background(tcell.Color(231))
-			s.SetCell(x, y, st, '@')
-		}
+	y := rand.Intn(h)
+
+	for x := w - 1; x >= 0; x-- {
+		color := rand.Int31n(0x1000000)
+		stStr := st.Foreground(tcell.NewHexColor(color))
+		s.Clear()
+		s.Fill(' ', st)
+		s.SetContent(x, y, '0', []rune{'+', '-', '*', '/', '%'}, stStr)
+		s.Show()
+		time.Sleep(100 * time.Millisecond)
 	}
-	s.Show()
-
-	time.Sleep(10 * time.Second)
 
 	s.Fini()
 }
